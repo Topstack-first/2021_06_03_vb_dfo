@@ -1,0 +1,2 @@
+The correct On PO amount for Mobil MD1300CK4-1 is 40. The correct amount for Mobil MDTE10X32-5G is 11. 
+query combines the purchase order table t_po and the t_receipt table to show correct numbers received.

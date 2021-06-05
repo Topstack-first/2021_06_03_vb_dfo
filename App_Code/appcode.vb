@@ -2283,7 +2283,8 @@ Public Class appcode
         Dim conn As New SqlConnection(ConnectionString)
         Dim commandString As String
         conn.Open()
-        commandString = "select sum(quantity-received) as onpo from v_poline where manufacturer=@manufacturer and partnumber=@partnumber and complete=@complete"
+        'commandString = "select sum(quantity-received) as onpo from v_poline where manufacturer=@manufacturer and partnumber=@partnumber and complete=@complete"
+        commandString = "select (a.sumQty - b.sumReceived) as onpo from (select sum(quantity) as sumQty,manufacturer, partnumber, complete from [v_poline] group by manufacturer, partnumber, complete) a inner join (select sum(dbo.t_receipt.received) as sumReceived, manufacturer, partnumber, complete from dbo.t_po INNER JOIN dbo.t_receipt ON dbo.t_po.poID = dbo.t_receipt.poID group by manufacturer, partnumber, complete) b on a.manufacturer=b.manufacturer and a.partnumber=b.partnumber and a.complete=b.complete where a.manufacturer=@manufacturer and a.partnumber=@partnumber and a.complete=@complete"
         Dim comm As New SqlCommand(commandString, conn)
         comm.Parameters.AddWithValue("@manufacturer", manufacturer)
         comm.Parameters.AddWithValue("@partnumber", partnumber)
